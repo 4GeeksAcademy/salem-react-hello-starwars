@@ -1,7 +1,7 @@
 import Cards from './Cards'
 import useGlobalReducer from '../hooks/useGlobalReducer'
 import { useEffect } from 'react'
-import { getStarWarsData } from '../data/starWarsData'
+import { getStarWarsData } from '../data/starWarsData.jsx'
 
 function CardContainer() {
   const { store, dispatch } = useGlobalReducer();

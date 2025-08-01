@@ -9,39 +9,10 @@ function Cards({ character }) {
   const isInFavorites = store.favorites.find(fav => fav.id === character.id);
   
   const handleFavorite = () => {
-    if (isInFavorites) {
-      dispatch({
-        type: "remove_favorite",
-        payload: character.id
-      });
-    } else {
-      dispatch({
-        type: "add_favorite",
-        payload: character
-      });
-    }
-  };
-
-  // Render different content based on type
-  const renderCardContent = () => {
-    if (character.type === "planet") {
-      return (
-        <p className="card-text">
-          <small className="text-muted">Climate: {character.climate}</small><br />
-          <small className="text-muted">Terrain: {character.terrain}</small><br />
-          <small className="text-muted">Population: {character.population}</small>
-        </p>
-      );
-    } else {
-      // Default to character
-      return (
-        <p className="card-text">
-          <small className="text-muted">Gender: {character.gender}</small><br />
-          <small className="text-muted">Hair Color: {character.hair}</small><br />
-          <small className="text-muted">Eye Color: {character.eyes}</small>
-        </p>
-      );
-    }
+    dispatch({
+      type: isInFavorites ? "remove_favorite" : "add_favorite",
+      payload: isInFavorites ? character.id : character
+    });
   };
 
   return (
@@ -49,7 +20,21 @@ function Cards({ character }) {
       <img  src={rigoImageUrl} className="card-img-top" style={{ height: "10rem", borderWidth: "2px", borderStyle: "solid", borderColor: "#333"}} alt="Character" />
       <div className="card-body">
         <h5 className="card-title">{character.name}</h5>
-        {renderCardContent()}
+        
+        {character.type === "planet" ? (
+          <p className="card-text">
+            <small className="text-muted">Climate: {character.climate}</small><br />
+            <small className="text-muted">Terrain: {character.terrain}</small><br />
+            <small className="text-muted">Population: {character.population}</small>
+          </p>
+        ) : (
+          <p className="card-text">
+            <small className="text-muted">Gender: {character.gender}</small><br />
+            <small className="text-muted">Hair Color: {character.hair}</small><br />
+            <small className="text-muted">Eye Color: {character.eyes}</small>
+          </p>
+        )}
+
         <div className="d-flex justify-content-between">
           <Link to={`/character/${character.id}`} className="btn btn-primary btn-sm">
             Learn more

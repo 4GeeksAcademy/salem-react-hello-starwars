@@ -1,9 +1,10 @@
-import { starWarsData } from "./data/starWarsData";
-
 export const initialStore = () => {
   return {
     favorites: [],
-    starWarsData: starWarsData,
+    starWarsData: {
+      characters: [],
+      planets: [],
+    },
   };
 };
 
