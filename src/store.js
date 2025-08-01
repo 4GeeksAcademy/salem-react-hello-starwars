@@ -1,10 +1,10 @@
-import { starWarsData, getStarWarsData } from "./data/starWarsData";
+import { starWarsData } from "./data/starWarsData";
 
 export const initialStore = () => {
   return {
     message: null,
     favorites: [],
-    starWarsData: starWarsData, // Start with fallback data
+    starWarsData: starWarsData,
     isLoading: false,
   };
 };
@@ -26,9 +26,8 @@ export default function storeReducer(store, action = {}) {
 
     case "add_favorite":
       const character = action.payload;
-      // Check if already in favorites
       if (store.favorites.find((fav) => fav.id === character.id)) {
-        return store; // Already in favorites, don't add again
+        return store;
       }
       return {
         ...store,

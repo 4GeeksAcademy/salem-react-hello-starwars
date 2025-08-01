@@ -3,7 +3,7 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 import { Link } from "react-router-dom";
 
-function Cards({ character = { id: 1, name: "Luke Skywalker", gender: "Male", hair: "Blond", eyes: "Blue", type: "character" } }) {
+function Cards({ character }) {
   const { store, dispatch } = useGlobalReducer();
   
   const isInFavorites = store.favorites.find(fav => fav.id === character.id);
