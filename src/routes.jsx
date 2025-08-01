@@ -15,6 +15,7 @@ export const router = createBrowserRouter(
         <Route path= "/" element={<Home />} />
         <Route path="/character/:characterId" element={<CardView />} />
         <Route path="/planet/:characterId" element={<CardView />} />
+        <Route path="/vehicle/:vehicleId" element={<CardView />} />
       </Route>
     )
 );

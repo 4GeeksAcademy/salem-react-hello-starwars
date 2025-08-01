@@ -8,17 +8,29 @@ export const CardView = () => {
   const location = useLocation();
   const { store, dispatch } = useGlobalReducer();
 
-  // Determine if this is a character or planet route
+  // Determine type and param based on route
   let type = "character";
+  let id;
   if (location.pathname.startsWith("/planet/")) {
     type = "planet";
+    id = parseInt(params.characterId || params.planetId);
+  } else if (location.pathname.startsWith("/vehicle/")) {
+    type = "vehicle";
+    id = parseInt(params.vehicleId);
+  } else {
+    id = parseInt(params.characterId);
   }
-  // Get the id from params (works for both /character/:characterId and /planet/:characterId)
-  const id = parseInt(params.characterId);
 
   // Select the correct array based on type
-  const dataArr = type === "planet" ? store.starWarsData.planets : store.starWarsData.characters;
-  const item = dataArr.find(item => item.id === id);
+  let dataArr;
+  if (type === "planet") {
+    dataArr = store.starWarsData.planets;
+  } else if (type === "vehicle") {
+    dataArr = store.starWarsData.vehicles;
+  } else {
+    dataArr = store.starWarsData.characters;
+  }
+  const item = dataArr && dataArr.find(item => item.id === id);
 
   if (!item) {
     return (
@@ -57,6 +69,21 @@ export const CardView = () => {
           </div>
         </div>
       );
+    } else if (item.type === "vehicle") {
+      return (
+        <div className="row">
+          <div className="col-6">
+            <p><strong>Name:</strong> {item.name}</p>
+            <p><strong>Model:</strong> {item.model}</p>
+            <p><strong>Manufacturer:</strong> {item.manufacturer}</p>
+          </div>
+          <div className="col-6">
+            <p><strong>Crew:</strong> {item.crew}</p>
+            <p><strong>Passengers:</strong> {item.passengers}</p>
+            <p><strong>Cost in Credits:</strong> {item.cost_in_credits}</p>
+          </div>
+        </div>
+      );
     } else {
       // Character details
       return (
@@ -66,7 +93,6 @@ export const CardView = () => {
             <p><strong>Birth Year:</strong> {item.birthYear}</p>
             <p><strong>Gender:</strong> {item.gender}</p>
           </div>
-       
         </div>
       );
     }

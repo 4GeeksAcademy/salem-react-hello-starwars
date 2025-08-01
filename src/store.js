@@ -4,6 +4,7 @@ export const initialStore = () => {
     starWarsData: {
       characters: [],
       planets: [],
+      vehicles: [],
     },
   };
 };

@@ -1,3 +1,27 @@
+export const fetchVehicles = async () => {
+  const res = await fetch("https://www.swapi.tech/api/vehicles");
+  const data = await res.json();
+  const vehicles = await Promise.all(
+    data.results.slice(0, 3).map(async (item) => {
+      const { result } = await fetch(item.url).then(r => r.json());
+      const { uid, description, properties } = result;
+      return {
+        uid,
+        id: +uid,
+        name: properties.name,
+        model: properties.model,
+        manufacturer: properties.manufacturer,
+        cost_in_credits: properties.cost_in_credits,
+        crew: properties.crew,
+        passengers: properties.passengers,
+        type: "vehicle",
+        description
+      };
+    })
+  );
+  console.log("fetchVehicles result:", vehicles);
+  return vehicles;
+};
 
 
 export const fetchPeople = async () => {
@@ -52,11 +76,12 @@ export const fetchPlanets = async () => {
 };
 
 export const getStarWarsData = async () => {
-  const [characters, planets] = await Promise.all([
+  const [characters, planets, vehicles] = await Promise.all([
     fetchPeople(),
-    fetchPlanets()
+    fetchPlanets(),
+    fetchVehicles()
   ]);
-  console.log("getStarWarsData result:", { characters, planets });
-  return { characters, planets };
+  console.log("getStarWarsData result:", { characters, planets, vehicles });
+  return { characters, planets, vehicles };
 };
 
