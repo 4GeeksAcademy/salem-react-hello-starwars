@@ -11,8 +11,8 @@ export const Navbar = () => {
 		});
 	};
 
-	return (
-		<nav className="navbar navbar-light bg-light sticky-top">
+  return (
+	<nav className="navbar navbar-dark bg-dark sticky-top border-bottom border-secondary">
 			<div className="container">
 				<Link to="/">
 					<span className="navbar-brand mb-0 h1">StarWarrs</span>

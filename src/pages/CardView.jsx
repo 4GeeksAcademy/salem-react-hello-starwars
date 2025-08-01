@@ -100,10 +100,10 @@ export const CardView = () => {
 
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 bg-dark text-white min-vh-100 py-4">
       <div className="row justify-content-center">
         <div className="col-md-8">
-          <div className="card">
+          <div className="card bg-secondary text-white border-light shadow">
             <div className="row g-0">
               <div className="col-md-4">
                 <img 
