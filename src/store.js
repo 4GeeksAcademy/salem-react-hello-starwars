@@ -2,26 +2,17 @@ import { starWarsData } from "./data/starWarsData";
 
 export const initialStore = () => {
   return {
-    message: null,
     favorites: [],
     starWarsData: starWarsData,
-    isLoading: false,
   };
 };
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
-    case "set_loading":
-      return {
-        ...store,
-        isLoading: action.payload,
-      };
-
     case "set_star_wars_data":
       return {
         ...store,
         starWarsData: action.payload,
-        isLoading: false,
       };
 
     case "add_favorite":

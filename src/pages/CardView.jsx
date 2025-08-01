@@ -7,7 +7,6 @@ export const CardView = () => {
   const { characterId } = useParams();
   const { store, dispatch } = useGlobalReducer();
   
-  // Use the data from the global state instead of direct import
   const allData = [...store.starWarsData.characters, ...store.starWarsData.planets];
   const item = allData.find(item => item.id === parseInt(characterId));
   
