@@ -6,12 +6,12 @@ import { Link } from "react-router-dom";
 function Cards({ character }) {
   const { store, dispatch } = useGlobalReducer();
   
-  const isInFavorites = store.favorites.find(fav => fav.id === character.id);
+  const isInFavorites = store.favorites.find(fav => fav.uid === character.uid);
   
   const handleFavorite = () => {
     dispatch({
       type: isInFavorites ? "remove_favorite" : "add_favorite",
-      payload: isInFavorites ? character.id : character
+      payload: isInFavorites ? character.uid : character
     });
   };
 
@@ -23,27 +23,27 @@ function Cards({ character }) {
         
         {character.type === "planet" ? (
           <p className="card-text">
-            <small className="text-muted">Climate: {character.climate}</small><br />
+            {/* <small className="text-muted">Climate: {character.climate}</small><br />
             <small className="text-muted">Terrain: {character.terrain}</small><br />
-            <small className="text-muted">Population: {character.population}</small>
+            <small className="text-muted">Population: {character.population}</small> */}
           </p>
         ) : (
           <p className="card-text">
-            <small className="text-muted">Gender: {character.gender}</small><br />
+            {/* <small className="text-muted">Gender: {character.gender}</small><br />
             <small className="text-muted">Hair Color: {character.hair}</small><br />
-            <small className="text-muted">Eye Color: {character.eyes}</small>
+            <small className="text-muted">Eye Color: {character.eyes}</small> */}
           </p>
         )}
 
         <div className="d-flex justify-content-between">
-          <Link to={`/character/${character.id}`} className="btn btn-primary btn-sm">
-            Learn more
+          <Link to={`/${character.type === "planet" ? "planet" : "character"}/${character.uid}`} className="btn btn-primary btn-sm">
+            more...
           </Link>
           <button 
             className={`btn btn-sm ${isInFavorites ? 'btn-warning' : 'btn-outline-warning'}`}
             onClick={handleFavorite}
           >
-            <i className="fas fa-heart"></i> {isInFavorites ? 'Favorited' : 'Favorite'}
+                      <i className="fas fa-heart"></i>
           </button>
         </div>
       </div>
