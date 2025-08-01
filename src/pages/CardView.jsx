@@ -7,38 +7,77 @@ export const CardView = () => {
   const { characterId } = useParams();
   const { store, dispatch } = useGlobalReducer();
   
-  // Sample character data (in a real app, this would come from an API or store)
-  const characters = [
-    { id: 1, name: "Luke Skywalker", gender: "Male", hair: "Blond", eyes: "Blue", height: "172", mass: "77", birthYear: "19BBY" },
-    { id: 2, name: "Leia Organa", gender: "Female", hair: "Brown", eyes: "Brown", height: "150", mass: "49", birthYear: "19BBY" },
-    { id: 3, name: "Han Solo", gender: "Male", hair: "Brown", eyes: "Brown", height: "180", mass: "80", birthYear: "29BBY" },
-    { id: 4, name: "Darth Vader", gender: "Male", hair: "None", eyes: "Yellow", height: "202", mass: "136", birthYear: "41.9BBY" }
-  ];
+  // Use the data from the global state instead of direct import
+  const allData = [...store.starWarsData.characters, ...store.starWarsData.planets];
+  const item = allData.find(item => item.id === parseInt(characterId));
   
-  const character = characters.find(char => char.id === parseInt(characterId));
-  
-  if (!character) {
+  if (!item) {
     return (
       <div className="container text-center mt-5">
-        <h1>Character not found!</h1>
+        <h1>Item not found!</h1>
         <Link to="/" className="btn btn-primary">Back to Home</Link>
       </div>
     );
   }
   
-  const isInFavorites = store.favorites.find(fav => fav.id === character.id);
+  const isInFavorites = store.favorites.find(fav => fav.id === item.id);
   
   const handleFavorite = () => {
     if (isInFavorites) {
       dispatch({
         type: "remove_favorite",
-        payload: character.id
+        payload: item.id
       });
     } else {
       dispatch({
         type: "add_favorite",
-        payload: character
+        payload: item
       });
+    }
+  };
+
+  // Render different content based on type
+  const renderDetails = () => {
+    if (item.type === "planet") {
+      return (
+        <div className="row">
+          <div className="col-6">
+            <p><strong>Name:</strong> {item.name}</p>
+            <p><strong>Climate:</strong> {item.climate}</p>
+            <p><strong>Terrain:</strong> {item.terrain}</p>
+          </div>
+          <div className="col-6">
+            <p><strong>Population:</strong> {item.population}</p>
+            <p><strong>Diameter:</strong> {item.diameter} km</p>
+            <p><strong>Rotation Period:</strong> {item.rotationPeriod} hours</p>
+          </div>
+        </div>
+      );
+    } else {
+      // Character details
+      return (
+        <div className="row">
+          <div className="col-6">
+            <p><strong>Name:</strong> {item.name}</p>
+            <p><strong>Birth Year:</strong> {item.birthYear}</p>
+            <p><strong>Gender:</strong> {item.gender}</p>
+          </div>
+          <div className="col-6">
+            <p><strong>Height:</strong> {item.height} cm</p>
+            <p><strong>Mass:</strong> {item.mass} kg</p>
+            <p><strong>Hair Color:</strong> {item.hair}</p>
+            <p><strong>Eye Color:</strong> {item.eyes}</p>
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const getDescription = () => {
+    if (item.type === "planet") {
+      return `Discover the fascinating world of ${item.name}, a unique planet in the Star Wars universe with its own climate, terrain, and inhabitants.`;
+    } else {
+      return `A long time ago in a galaxy far, far away... Learn more about ${item.name}, an iconic Star Wars character.`;
     }
   };
 
@@ -52,30 +91,32 @@ export const CardView = () => {
                 <img 
                   src={rigoImageUrl} 
                   className="img-fluid rounded-start h-100" 
-                  alt={character.name}
+                  alt={item.name}
                   style={{ objectFit: "cover" }}
                 />
               </div>
               <div className="col-md-8">
                 <div className="card-body">
-                  <h1 className="card-title">{character.name}</h1>
+                  <h1 className="card-title">{item.name}</h1>
                   <p className="card-text">
-                    A long time ago in a galaxy far, far away... Learn more about this iconic Star Wars character.
+                    {getDescription()}
                   </p>
                   
                   <hr />
 
-                    <div className="row">
-                      <p>Name: {character.name}</p>
-                      <p>Birth Year: {character.birthYear}</p>
-                      <p>Gender: {character.gender}</p>
-                      <p>Height: {character.height} cm</p>
-                      <p>Mass: {character.mass} kg</p>
-                      <p>Hair Color: {character.hair}</p>
-                      <p>Eye Color: {character.eyes}</p>
-                    </div>
+                  {renderDetails()}
                   
-                 
+                  <div className="d-flex gap-2 mt-4">
+                    <Link to="/" className="btn btn-primary">
+                      <i className="fas fa-arrow-left"></i> Back Home
+                    </Link>
+                    <button 
+                      className={`btn ${isInFavorites ? 'btn-warning' : 'btn-outline-warning'}`}
+                      onClick={handleFavorite}
+                    >
+                      <i className="fas fa-heart"></i> {isInFavorites ? 'Remove from Favorites' : 'Add to Favorites'}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

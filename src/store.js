@@ -1,33 +1,15 @@
+import { starWarsData } from "./data/starWarsData";
+
 export const initialStore = () => {
   return {
     message: null,
     favorites: [],
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      },
-    ],
+    starWarsData: starWarsData, // Add the data to global state
   };
 };
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
-    case "add_task":
-      const { id, color } = action.payload;
-      return {
-        ...store,
-        todos: store.todos.map((todo) =>
-          todo.id === id ? { ...todo, background: color } : todo
-        ),
-      };
-
     case "add_favorite":
       const character = action.payload;
       // Check if already in favorites
