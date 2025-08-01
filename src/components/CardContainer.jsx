@@ -1,9 +1,27 @@
 import Cards from './Cards'
 import useGlobalReducer from '../hooks/useGlobalReducer'
+import { useEffect } from 'react'
+import { getStarWarsData } from '../data/starWarsData'
 
 function CardContainer() {
-  const { store } = useGlobalReducer();
+  const { store, dispatch } = useGlobalReducer();
   const { characters, planets } = store.starWarsData;
+
+  // Load real API data when component mounts
+  useEffect(() => {
+    const loadData = async () => {
+      dispatch({ type: "set_loading", payload: true });
+      try {
+        const apiData = await getStarWarsData();
+        dispatch({ type: "set_star_wars_data", payload: apiData });
+      } catch (error) {
+        console.error("Failed to load Star Wars data:", error);
+        dispatch({ type: "set_loading", payload: false });
+      }
+    };
+
+    loadData();
+  }, [dispatch]);
 
   return (
     <div className="container">
