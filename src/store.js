@@ -17,22 +17,30 @@ export default function storeReducer(store, action = {}) {
         starWarsData: action.payload,
       };
 
-    case "add_favorite":
-      const character = action.payload;
-      if (store.favorites.find((fav) => fav.id === character.id)) {
+    case "add_favorite": {
+      const item = action.payload;
+      if (
+        store.favorites.find(
+          (fav) => fav.id === item.id && fav.type === item.type
+        )
+      ) {
         return store;
       }
       return {
         ...store,
-        favorites: [...store.favorites, character],
+        favorites: [...store.favorites, item],
       };
+    }
 
-    case "remove_favorite":
-      const characterId = action.payload;
+    case "remove_favorite": {
+      const item = action.payload;
       return {
         ...store,
-        favorites: store.favorites.filter((fav) => fav.id !== characterId),
+        favorites: store.favorites.filter(
+          (fav) => !(fav.id === item.id && fav.type === item.type)
+        ),
       };
+    }
 
     default:
       throw Error("Unknown action.");

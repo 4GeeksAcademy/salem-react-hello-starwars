@@ -4,10 +4,10 @@ import useGlobalReducer from "../hooks/useGlobalReducer";
 export const Navbar = () => {
 	const { store, dispatch } = useGlobalReducer();
 	
-	const removeFavorite = (characterId) => {
+	const removeFavorite = (item) => {
 		dispatch({
 			type: "remove_favorite",
-			payload: characterId
+			payload: item
 		});
 	};
 
@@ -26,17 +26,17 @@ export const Navbar = () => {
 							{store.favorites.length === 0 ? (
 								<li><span className="dropdown-item">No favorites yet</span></li>
 							) : (
-								store.favorites.map(character => (
-									<li key={character.id} className="dropdown-item d-flex justify-content-between align-items-center">
-										<span>{character.name}</span>
-										<button 
-											className="btn btn-sm btn-outline-danger"
-											onClick={() => removeFavorite(character.id)}
-										>
-											<i className="fas fa-trash"></i>
-										</button>
-									</li>
-								))
+			store.favorites.map(item => (
+			  <li key={item.id + '-' + item.type} className="dropdown-item d-flex justify-content-between align-items-center">
+				<span>{item.name}</span>
+				<button 
+				  className="btn btn-sm btn-outline-danger"
+				  onClick={() => removeFavorite(item)}
+				>
+				  <i className="fas fa-trash"></i>
+				</button>
+			  </li>
+			))
 							)}						
 						</ul>
 					</div>

@@ -4,11 +4,11 @@ import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 function Cards({ item }) {
   const { store, dispatch } = useGlobalReducer();
   if (!item) return null;
-  const isInFavorites = store.favorites.find(fav => fav.uid === item.uid);
+  const isInFavorites = store.favorites.some(fav => fav.id === item.id && fav.type === item.type);
   const handleFavorite = () => {
     dispatch({
       type: isInFavorites ? "remove_favorite" : "add_favorite",
-      payload: isInFavorites ? item.uid : item
+      payload: item
     });
   };
 
